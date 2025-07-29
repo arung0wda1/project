@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arun Gowda - Video Editor & Post-Production Specialist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark background */
+            color: #e6edf3; /* Light text */
+            overflow-x: hidden; /* Prevent horizontal scroll on body unless explicitly needed */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay; /* Blends the linear gradient with the image */
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.4) 0%, rgba(30, 41, 59, 0) 70%);
+            animation: rotateBackground 20s linear infinite;
+            z-index: 1;
+        }
+        .hero-section::after { /* Overlay for better text readability */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: 2;
+        }
+        @keyframes rotateBackground {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10; /* Ensure content is on top of all overlays */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSlideUp 1s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-delay: 0.5s;
+        }
+        @keyframes fadeInSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: #6366f1; /* Indigo */
+            border-radius: 2px;
+        }
+        .project-card {
+            background-color: #161b22;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInSlideUp 0.8s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .project-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover img {
+            transform: scale(1.05);
+        }
+        .project-info {
+            padding: 1.5rem;
+        }
+        .showreel-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            background-color: #000;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(0.95);
+            opacity: 0;
+            animation: zoomInFadeIn 1s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-delay: 1s;
+        }
+        @keyframes zoomInFadeIn {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .showreel-container iframe, .mini-showreel-item iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 8px; /* Added for consistency */
+        }
+        .mini-showreel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        /* Animation for mini-showreel items */
+        @keyframes slideInFromLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .mini-showreel-item {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            background-color: #000;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Initial state for animation */
+            transform: translateX(-100%);
+            opacity: 0;
+            /* Apply animation when element is in view (handled by JS IntersectionObserver) */
+            animation: slideInFromLeft 0.8s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-play-state: paused; /* Pause until scrolled into view */
+        }
+        .mini-showreel-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        /* Staggered animation delays for mini-showreel items */
+        .mini-showreel-item:nth-child(1) { animation-delay: 0.1s; }
+        .mini-showreel-item:nth-child(2) { animation-delay: 0.3s; }
+        .mini-showreel-item:nth-child(3) { animation-delay: 0.5s; }
+        .mini-showreel-item:nth-child(4) { animation-delay: 0.7s; }
+        .mini-showreel-item:nth-child(5) { animation-delay: 0.9s; }
+        .mini-showreel-item:nth-child(6) { animation-delay: 1.1s; }
+
+
+        .contact-form {
+            background-color: #161b22;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInSlideUp 1s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-delay: 0.5s;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid #2d3748;
+            background-color: #0d1117;
+            color: #e6edf3;
+            transition: border-color 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        .submit-button {
+            background-color: #6366f1;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .submit-button:hover {
+            background-color: #4f46e5;
+            transform: translateY(-2px);
+        }
+        .skill-badge {
+            background-color: #2d3748;
+            color: #a78bfa;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            animation: popIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            cursor: pointer; /* Indicate clickable */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .skill-badge:hover {
+            background-color: #3b4556;
+            transform: translateY(-2px);
+        }
+        @keyframes popIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        /* Animation delays for skills */
+        .skill-badge:nth-child(1) { animation-delay: 0.1s; }
+        .skill-badge:nth-child(2) { animation-delay: 0.2s; }
+        .skill-badge:nth-child(3) { animation-delay: 0.3s; }
+        .skill-badge:nth-child(4) { animation-delay: 0.4s; }
+        .skill-badge:nth-child(5) { animation-delay: 0.5s; }
+        .skill-badge:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Experience Section specific styles */
+        .experience-item {
+            background-color: #161b22;
+            border-left: 4px solid #6366f1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .experience-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 60vh;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .hero-content p {
+                font-size: 1rem;
+            }
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            .mini-showreel-grid {
+                grid-template-columns: 1fr;
+            }
+            /* Make navigation horizontally scrollable on small screens */
+            header nav ul {
+                overflow-x: auto;
+                white-space: nowrap; /* Prevent items from wrapping */
+                justify-content: flex-start; /* Align items to the start */
+                padding-bottom: 8px; /* Add some padding for scrollbar */
+            }
+            header nav ul li {
+                flex-shrink: 0; /* Prevent items from shrinking */
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            backdrop-filter: blur(5px); /* Blur effect */
+            -webkit-backdrop-filter: blur(5px); /* Safari support */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #161b22;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            position: relative;
+            transform: translateY(-50px);
+            opacity: 0;
+            animation: modalOpen 0.3s forwards ease-out;
+        }
+        @keyframes modalOpen {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 30px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #e6edf3;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #6366f1; /* Blue */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="py-4 px-6 fixed w-full z-50 bg-transparent">
+        <nav class="container flex justify-between items-center">
+            <div class="text-2xl font-bold text-white">Arun Gowda</div>
+            <ul class="flex space-x-6 text-gray-300">
+                <li><a href="#home" class="hover:text-white transition-colors duration-300">Home</a></li>
+                <li><a href="#about" class="hover:text-white transition-colors duration-300">About</a></li>
+                <li><a href="#showreel" class="hover:text-white transition-colors duration-300">Showreel</a></li>
+                <li><a href="#portfolio" class="hover:text-white transition-colors duration-300">Portfolio</a></li>
+                <li><a href="#experience" class="hover:text-white transition-colors duration-300">Experience</a></li>
+                <li><a href="#skills" class="hover:text-white transition-colors duration-300">Skills</a></li>
+                <li><a href="#contact" class="hover:text-white transition-colors duration-300">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-content">
+            <h1 class="text-5xl font-extrabold text-white mb-4 leading-tight">
+                Arun Gowda <br> <span class="text-indigo-400">Video Editor & Post-Production Specialist</span>
+            </h1>
+            <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+                Bringing stories to life with creative vision and technical expertise. Crafting compelling narratives through seamless editing and immersive sound design.
+            </p>
+            <a href="#showreel" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                View My Work
+            </a>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="py-20 bg-gray-900">
+        <div class="container">
+            <h2 class="text-4xl font-bold text-white text-center mb-12 section-title">About Me</h2>
+            <div class="max-w-3xl mx-auto text-lg text-gray-300 leading-relaxed">
+                <p class="mb-4">
+                    As a dedicated and passionate Video Editor and Post-Production Specialist, I thrive on transforming raw footage into compelling visual stories. My expertise spans across the entire post-production pipeline, from initial data management and technical assistance to intricate online editing, sound design, and final mastering.
+                </p>
+                <p class="mb-4">
+                    I excel in collaborative environments, maintaining strong working relationships with diverse project teams. My approach is defined by clear objective setting, focused prioritization, and a strong sense of responsibility, consistently meeting scheduled deadlines and embracing new challenges.
+                </p>
+                <p>
+                    With a solid foundation in multimedia applications and a keen eye for creative visualization, I am committed to delivering high-quality, impactful content that resonates with audiences. My key strengths include proficiency in industry-standard software like Final Cut Pro, Adobe Premiere Pro, Adobe Audition, and Soundtrack Pro, coupled with strong leadership and team-playing abilities.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Showreel Section -->
+    <section id="showreel" class="py-20 bg-gray-800">
+        <div class="container">
+            <h2 class="text-4xl font-bold text-white text-center mb-12 section-title">My Showreel & Highlights</h2>
+            <div class="showreel-container">
+                <!-- Main Showreel Video -->
+                <iframe src="https://www.youtube.com/embed/T5IjeZ-1orI" title="Arun Gowda Main Showreel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <p class="text-center text-gray-400 mt-8">
+                Explore a selection of my work below.
+            </p>
+
+            <!-- Additional Highlight Videos Grid -->
+            <div class="mini-showreel-grid">
+                <div class="mini-showreel-item">
+                    <iframe src="https://www.youtube.com/embed/xI3qDRiY8wc" title="Video Highlight 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="mini-showreel-item">
+                    <iframe src="https://www.youtube.com/embed/Oqc4NQnOtGE" title="Video Highlight 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="mini-showreel-item">
+                    <iframe src="https://www.youtube.com/embed/74LFtUSsT0k" title="Video Highlight 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <!-- You can add more .mini-showreel-item divs here for more videos -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-gray-900">
+        <div class="container">
+            <h2 class="text-4xl font-bold text-white text-center mb-12 section-title">Featured Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 project-grid">
+
+                <!-- Project 1: Netflix original series (In Real Love) -->
+                <div class="project-card" style="animation-delay: 0.1s;">
+                    <a href="https://youtu.be/S3KLLyrXQQA?si=1nyII2QVE0dclAl" target="_blank" rel="noopener noreferrer">
+                        <img src="https://placehold.co/600x400/1a202c/e6edf3?text=Netflix+Series" alt="Netflix Series Thumbnail">
+                    </a>
+                    <div class="project-info">
+                        <h3 class="text-xl font-semibold text-white mb-2" data-project-title="Netflix Original Series (In Real Love)">Netflix Original Series (In Real Love)</h3>
+                        <p class="text-gray-400 text-sm" data-project-description="Worked with the production team as DIT & Edit (Technical assistance).">Worked with the production team as DIT & Edit (Technical assistance).</p>
+                        <span class="text-indigo-400 text-xs mt-2 block">Post-Production, Technical Assistance</span>
+                        <button class="enhance-description-btn mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 w-full">✨ Enhance Description</button>
+                    </div>
+                </div>
+
+                <!-- Project 2: Ham Bane Tum Bane (SONY Marathi) -->
+                <div class="project-card" style="animation-delay: 0.2s;">
+                    <a href="https://youtu.be/TQmW9hQcRis?feature=shared" target="_blank" rel="noopener noreferrer">
+                        <img src="https://placehold.co/600x400/1a202c/e6edf3?text=SONY+Marathi+Serial" alt="SONY Marathi Serial Thumbnail">
+                    </a>
+                    <div class="project-info">
+                        <h3 class="text-xl font-semibold text-white mb-2" data-project-title="Ham Bane Tum Bane (SONY Marathi)">Ham Bane Tum Bane (SONY Marathi)</h3>
+                        <p class="text-gray-400 text-sm" data-project-description="Online Editor for this popular SONY Marathi serial.">Online Editor for this popular SONY Marathi serial.</p>
+                        <span class="text-indigo-400 text-xs mt-2 block">Online Editing, Television</span>
+                        <button class="enhance-description-btn mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 w-full">✨ Enhance Description</button>
+                    </div>
+                </div>
+
+                <!-- Project 3: Shubhamangala online (Colors Marathi) -->
+                <div class="project-card" style="animation-delay: 0.3s;">
+                    <a href="https://youtu.be/hf5CzfU3zaE?si=wkRf3kKy-9ZvwCVy" target="_blank" rel="noopener noreferrer">
+                        <img src="https://placehold.co/600x400/1a202c/e6edf3?text=Colors+Marathi+Show" alt="Colors Marathi Show Thumbnail">
+                    </a>
+                    <div class="project-info">
+                        <h3 class="text-xl font-semibold text-white mb-2" data-project-title="Shubhamangala online (Colors Marathi)">Shubhamangala online (Colors Marathi)</h3>
+                        <p class="text-gray-400 text-sm" data-project-description="Online Editor for this Colors Marathi production.">Online Editor for this Colors Marathi production.</p>
+                        <span class="text-indigo-400 text-xs mt-2 block">Online Editing, Television</span>
+                        <button class="enhance-description-btn mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 w-full">✨ Enhance Description</button>
+                    </div>
+                </div>
+
+                <!-- Project 4: Zee Zest Grand Trunk Rasoi -->
+                <div class="project-card" style="animation-delay: 0.4s;">
+                    <a href="https://youtu.be/-vAZwPDv3y8?si=CThQWU2J9h4x_NCY" target="_blank" rel="noopener noreferrer">
+                        <img src="https://placehold.co/600x400/1a202c/e6edf3?text=Zee+Zest+Rasoi" alt="Zee Zest Rasoi Thumbnail">
+                    </a>
+                    <div class="project-info">
+                        <h3 class="text-xl font-semibold text-white mb-2" data-project-title="Zee Zest Grand Trunk Rasoi">Zee Zest Grand Trunk Rasoi</h3>
+                        <p class="text-gray-400 text-sm" data-project-description="Involved in the post-production of this culinary show.">Involved in the post-production of this culinary show.</p>
+                        <span class="text-indigo-400 text-xs mt-2 block">Post-Production, Food & Travel</span>
+                        <button class="enhance-description-btn mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 w-full">✨ Enhance Description</button>
+                    </div>
+                </div>
+
+                <!-- Project 5: Editor For Educational Training Videos (Zee5 Eduauraa) -->
+                <div class="project-card" style="animation-delay: 0.5s;">
+                    <a href="https://youtu.be/Wx0P16AQOY0?si=29iroHKEZDhanRP" target="_blank" rel="noopener noreferrer">
+                        <img src="https://placehold.co/600x400/1a202c/e6edf3?text=Educational+Videos" alt="Educational Videos Thumbnail">
+                    </a>
+                    <div class="project-info">
+                        <h3 class="text-xl font-semibold text-white mb-2" data-project-title="Educational Training Videos (Zee5 Eduauraa)">Educational Training Videos (Zee5 Eduauraa)</h3>
+                        <p class="text-gray-400 text-sm" data-project-description="Editor for educational content on the Zee5 Eduauraa platform.">Editor for educational content on the Zee5 Eduauraa platform.</p>
+                        <span class="text-indigo-400 text-xs mt-2 block">Video Editing, E-learning</span>
+                        <button class="enhance-description-btn mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 w-full">✨ Enhance Description</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 bg-gray-800">
+        <div class="container">
+            <h2 class="text-4xl font-bold text-white text-center mb-12 section-title">My Experience</h2>
+
+            <div class="max-w-3xl mx-auto">
+                <!-- Experience Item 1: PostHub Studio -->
+                <div class="experience-item">
+                    <h3 class="text-2xl font-semibold text-white mb-2">PostHub Studio</h3>
+                    <p class="text-indigo-400 text-md mb-2">August 2019 - 2022</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Worked as an Assistant Online Editor for **(Molkarin Bai) (Star Marathi)**.</li>
+                        <li>Served as an Online Editor for **(Ham Bane Tum Bane) (SONY Marathi)** serial.</li>
+                        <li>Contributed as an Assistant Online Editor for **(Ek Kahani 20 Panne)**.</li>
+                        <li>Assisted as an Assistant Online Editor for **(Fear Files)**.</li>
+                        <li>Worked as an Online Editor for **(Shubhamangala online) (Colors Marathi)**.</li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 2: Netflix Original Series (In Real Love) -->
+                <div class="experience-item">
+                    <h3 class="text-2xl font-semibold text-white mb-2">Netflix Original Series (In Real Love)</h3>
+                    <p class="text-indigo-400 text-md mb-2">2021 - 2022</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Worked with the production team as a **DIT & EDIT (Technical Assistance)**.</li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 3: Zee Zest Grand Trunk Rasoi -->
+                <div class="experience-item">
+                    <h3 class="text-2xl font-semibold text-white mb-2">Zee Zest Grand Trunk Rasoi</h3>
+                    <p class="text-indigo-400 text-md mb-2">Details from CV (Please specify dates if available)</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Involved in the post-production of this culinary show.</li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 4: Zee5 Eduauraa -->
+                <div class="experience-item">
+                    <h3 class="text-2xl font-semibold text-white mb-2">Zee5 Eduauraa</h3>
+                    <p class="text-indigo-400 text-md mb-2">Details from CV (Please specify dates if available)</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Editor for Educational Training Videos.</li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 5: High Tech Enterprise -->
+                <div class="experience-item">
+                    <h3 class="text-2xl font-semibold text-white mb-2">High Tech Enterprise</h3>
+                    <p class="text-indigo-400 text-md mb-2">Details from CV (Please specify dates if available)</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Worked on short films and short videos.</li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 6: Front Row App -->
+                <div class="experience-item">
+                    <h3 class="text-2xl font-semibold text-white mb-2">Front Row App</h3>
+                    <p class="text-indigo-400 text-md mb-2">Details from CV (Please specify dates if available)</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Video Editing for the Front Row app.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-gray-900">
+        <div class="container">
+            <h2 class="text-4xl font-bold text-white text-center mb-12 section-title">My Skills</h2>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="skill-badge">Final Cut Pro 7</span>
+                <span class="skill-badge">Adobe Premiere Pro</span>
+                <span class="skill-badge">Adobe Audition</span>
+                <span class="skill-badge">Soundtrack Pro</span>
+                <span class="skill-badge">PRO Tools</span>
+                <span class="skill-badge">Video Editing</span>
+                <span class="skill-badge">Sound Editing</span>
+                <span class="skill-badge">DIT & Edit</span>
+                <span class="skill-badge">Online Editing</span>
+                <span class="skill-badge">HD Mastering</span>
+                <span class="skill-badge">Audio & Video Rectification</span>
+                <span class="skill-badge">Creative Visualization</span>
+                <span class="skill-badge">Team Leadership</span>
+                <span class="skill-badge">Windows OS</span>
+                <span class="skill-badge">MACINTOSH OS</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-800">
+        <div class="container">
+            <h2 class="text-4xl font-bold text-white text-center mb-12 section-title">Get In Touch</h2>
+            <div class="max-w-xl mx-auto contact-form">
+                <!-- Formspree integration: Action updated with the user-provided Formspree ID -->
+                <form action="https://formspree.io/f/xpwlreny" method="POST" id="contactForm">
+                    <input type="text" name="name" placeholder="Your Name" class="form-input" required>
+                    <input type="email" name="_replyto" placeholder="Your Email" class="form-input" required>
+                    <textarea name="message" id="contactMessage" rows="5" placeholder="Your Message" class="form-input" required></textarea>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                        <button type="submit" class="submit-button flex-1">Send Message</button>
+                        <button type="button" id="suggestNextStepsBtn" class="submit-button bg-blue-600 hover:bg-blue-700 flex-1">✨ Suggest Next Steps</button>
+                    </div>
+                </form>
+                <div class="text-center text-gray-400 mt-8">
+                    <p>Email: <a href="mailto:arungowdaedit@gmail.com" class="text-indigo-400 hover:underline">arungowdaedit@gmail.com</a></p>
+                    <p>Phone: <a href="tel:+918152887296" class="text-indigo-400 hover:underline">+91 8152887296</a></p>
+                    <address class="not-italic">
+                        403 B wing Kingston classic <br>
+                        Chincholi bunder road, Malad west <br>
+                        Mumbai – 400064, India
+                    </address>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-900 text-gray-500 text-center text-sm">
+        <div class="container">
+            <p>&copy; 2025 Arun Gowda. All rights reserved.</p>
+            <p class="mt-2">Designed with passion by Arun Gowda.</p>
+        </div>
+    </footer>
+
+    <!-- The Modal (Reused for both Project Enhancement and Skill Explanation) -->
+    <div id="descriptionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 class="text-2xl font-bold text-white mb-4" id="modalTitle"></h3>
+            <div class="loading-spinner" id="loadingSpinner"></div>
+            <p id="modalContentText" class="text-gray-300 whitespace-pre-wrap"></p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for animations
+        const animateOnScroll = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        // Select all elements that should animate on scroll, including mini-showreel-item
+        const sectionsToAnimate = document.querySelectorAll('.project-card, .contact-form, .showreel-container, .hero-content, .skill-badge, #about p, .experience-item, .mini-showreel-item');
+        sectionsToAnimate.forEach(element => {
+            const observer = new IntersectionObserver(animateOnScroll, observerOptions);
+            observer.observe(element);
+        });
+
+        // Ensure animations run on page load for elements already in view
+        window.addEventListener('load', () => {
+            sectionsToAnimate.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    element.style.animationPlayState = 'running';
+                }
+            });
+        });
+
+        // Placeholder for a simple message box (instead of alert)
+        function showMessageBox(message, type = 'info') {
+            const messageBox = document.createElement('div');
+            messageBox.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px 25px;
+                border-radius: 8px;
+                font-size: 1rem;
+                color: white;
+                z-index: 1000;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+            `;
+
+            if (type === 'success') {
+                messageBox.style.backgroundColor = '#4CAF50';
+            } else if (type === 'error') {
+                messageBox.style.backgroundColor = '#f44336';
+            } else {
+                messageBox.style.backgroundColor = '#2196F3';
+            }
+
+            messageBox.textContent = message;
+            document.body.appendChild(messageBox);
+
+            setTimeout(() => {
+                messageBox.style.opacity = '1';
+            }, 10); // Small delay to trigger transition
+
+            setTimeout(() => {
+                messageBox.style.opacity = '0';
+                messageBox.addEventListener('transitionend', () => messageBox.remove());
+            }, 3000); // Message disappears after 3 seconds
+        }
+
+        // Formspree submission handling with client-side feedback
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            const form = e.target;
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json' // Important for Formspree to return JSON
+                    }
+                });
+
+                if (response.ok) {
+                    showMessageBox('Thank you for your message! I will get back to you soon.', 'success');
+                    form.reset(); // Clear the form
+                } else {
+                    const data = await response.json();
+                    if (data.errors) {
+                        showMessageBox('Error submitting form: ' + data.errors.map(err => err.message).join(', '), 'error');
+                    } else {
+                        showMessageBox('Error submitting form. Please try again.', 'error');
+                    }
+                    console.error('Formspree error response:', data);
+                }
+            } catch (error) {
+                showMessageBox('Network error. Could not submit form. Please check your internet connection.', 'error');
+                console.error("Error calling Formspree API:", error);
+            }
+        });
+
+
+        // MODAL LOGIC (Unified for Project Enhancement and Skill Explanation)
+        const descriptionModal = document.getElementById('descriptionModal');
+        const closeButton = document.querySelector('.close-button');
+        const modalTitle = document.getElementById('modalTitle'); // Renamed from modalProjectTitle
+        const modalContentText = document.getElementById('modalContentText'); // Renamed from enhancedDescriptionText
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        function openModal() {
+            descriptionModal.style.display = 'flex';
+        }
+
+        closeButton.onclick = function() {
+            descriptionModal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == descriptionModal) {
+                descriptionModal.style.display = 'none';
+            }
+        }
+
+        // Project Description Enhancement (Existing Feature)
+        document.querySelectorAll('.enhance-description-btn').forEach(button => {
+            button.addEventListener('click', async function() {
+                const projectCard = this.closest('.project-card');
+                const projectTitle = projectCard.querySelector('[data-project-title]').textContent;
+                const briefDescription = projectCard.querySelector('[data-project-description]').textContent;
+
+                modalTitle.textContent = `Enhanced Description for: ${projectTitle}`;
+                modalContentText.textContent = '';
+                loadingSpinner.style.display = 'block';
+                openModal();
+
+                const prompt = `You are a professional marketing copywriter specializing in video production. Given the following video project title and a brief description, generate a more engaging, professional, and slightly longer description (around 50-70 words) that highlights the project's impact and Arun Gowda's role. Focus on the value delivered.
+
+Project Title: ${projectTitle}
+Brief Description: ${briefDescription}
+
+Enhanced Description:`;
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        modalContentText.textContent = text;
+                    } else {
+                        modalContentText.textContent = "Could not generate an enhanced description. Please try again.";
+                        console.error("Gemini API response structure unexpected:", result);
+                    }
+                } catch (error) {
+                    modalContentText.textContent = "Error enhancing description. Please check your connection or try again later.";
+                    console.error("Error calling Gemini API:", error);
+                } finally {
+                    loadingSpinner.style.display = 'none';
+                }
+            });
+        });
+
+        // NEW FEATURE 1: Suggest Next Steps (Contact Section)
+        document.getElementById('suggestNextStepsBtn').addEventListener('click', async function() {
+            const contactMessage = document.getElementById('contactMessage').value;
+
+            if (!contactMessage.trim()) {
+                showMessageBox('Please type a message first to get suggestions.', 'info');
+                return;
+            }
+
+            modalTitle.textContent = 'Suggested Next Steps & Collaboration Ideas';
+            modalContentText.textContent = '';
+            loadingSpinner.style.display = 'block';
+            openModal();
+
+            const prompt = `A potential client or collaborator has sent the following message to a professional video editor. Based on their message, suggest 2-3 actionable and professional next steps or collaboration ideas for the video editor to propose. Keep it concise and focused on moving the conversation forward. Format as a bulleted list.
+
+Client Message: ${contactMessage}
+
+Suggested Next Steps:`;
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+            const payload = { contents: chatHistory };
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    modalContentText.textContent = text;
+                } else {
+                    modalContentText.textContent = "Could not generate suggestions. Please try again.";
+                    console.error("Gemini API response structure unexpected:", result);
+                }
+            } catch (error) {
+                modalContentText.textContent = "Error generating suggestions. Please check your connection or try again later.";
+                console.error("Error calling Gemini API:", error);
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        });
+
+        // NEW FEATURE 2: Explain Skill (Skills Section)
+        document.querySelectorAll('.skill-badge').forEach(badge => {
+            badge.addEventListener('click', async function() {
+                const skillName = this.textContent.trim();
+
+                modalTitle.textContent = `What is "${skillName}"?`;
+                modalContentText.textContent = '';
+                loadingSpinner.style.display = 'block';
+                openModal();
+
+                const prompt = `As an expert in video editing and post-production, briefly explain what '${skillName}' entails and why it's an important skill for a video editor like Arun Gowda. Keep the explanation concise (around 30-50 words) and professional.`;
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        modalContentText.textContent = text;
+                    } else {
+                        modalContentText.textContent = "Could not explain this skill. Please try again.";
+                        console.error("Gemini API response structure unexpected:", result);
+                    }
+                } catch (error) {
+                    modalContentText.textContent = "Error explaining skill. Please check your connection or try again later.";
+                    console.error("Error calling Gemini API:", error);
+                } finally {
+                    loadingSpinner.style.display = 'none';
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
